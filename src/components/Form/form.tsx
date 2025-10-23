@@ -61,7 +61,11 @@ export const Form: React.FC<Props> = ({ onAdd, todos, users }) => {
       return;
     }
 
-    const newIndex: number = Math.max(...todos.map(todo => todo.id)) + 1;
+    let newIndex: number = 1;
+
+    if (todos.length > 0) {
+      newIndex = Math.max(...todos.map(todo => todo.id)) + 1;
+    }
 
     onAdd({
       id: newIndex,
