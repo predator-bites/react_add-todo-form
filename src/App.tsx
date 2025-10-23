@@ -24,10 +24,10 @@ export function getUserById(id: number): User | null {
 }
 
 export const App = () => {
-  const modifiedTodos: Todo[] = [...todosFromServer].map(td => {
+  const modifiedTodos: Todo[] = todosFromServer.map(td => {
     const copy = { ...td };
 
-    copy['user'] = getUserById(copy.userId);
+    copy.user = getUserById(copy.userId);
 
     return copy;
   });
@@ -41,7 +41,7 @@ export const App = () => {
     <div className="App">
       <h1>Add todo form</h1>
 
-      <Form onAdd={onAdd} todos={todos} />
+      <Form onAdd={onAdd} todos={todos} users={usersFromServer} />
 
       <TodoList todos={todos} />
     </div>

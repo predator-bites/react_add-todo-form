@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import usersFromServer from '../../api/users';
 import { Todo, User } from '../Types/types';
 import { getUserById } from '../../App';
 
 interface Props {
   onAdd: (event: Todo) => void;
   todos: Todo[];
+  users: User[];
 }
 
 interface FormValues {
@@ -13,7 +13,7 @@ interface FormValues {
   selected: number;
 }
 
-export const Form: React.FC<Props> = ({ onAdd, todos: currentTodos }) => {
+export const Form: React.FC<Props> = ({ onAdd, todos, users }) => {
   const [selected, setSelected] = useState(0);
   const [title, setTitle] = useState('');
   const [selectedError, setSelectedError] = useState(false);
@@ -61,14 +61,14 @@ export const Form: React.FC<Props> = ({ onAdd, todos: currentTodos }) => {
       return;
     }
 
-    const newIndex: number = Math.max(...currentTodos.map(todo => todo.id)) + 1;
+    const newIndex: number = Math.max(...todos.map(todo => todo.id)) + 1;
 
     onAdd({
       id: newIndex,
       title: formValues.title,
       userId: formValues.selected,
       completed: false,
-      user: getUserById(formValues.selected) as User,
+      user: getUserById(formValues.selected),
     });
 
     cleanForm();
@@ -95,7 +95,7 @@ export const Form: React.FC<Props> = ({ onAdd, todos: currentTodos }) => {
           onChange={handleSelectedChange}
         >
           <option value="0">Choose a user</option>
-          {usersFromServer.map(user => (
+          {users.map(user => (
             <option value={user.id} key={user.id}>
               {user.name}
             </option>
